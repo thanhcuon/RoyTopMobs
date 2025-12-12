@@ -121,6 +121,7 @@ roytopmobs.reload - Reload configuration
 roytopmobs.toggle - Toggle tracking
 roytopmobs.setspawn - Set spawn points
 roytopmobs.spawn - Spawn mobs
+roytopmobs.deletespawn - Detele spawn mobs
 ```
 
 PlaceholderAPI:
