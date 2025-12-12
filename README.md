@@ -109,7 +109,8 @@ Commands:
 /rtm toggle - Toggle damage tracking
 /rtm setspawn <mobtype> - Set spawn location
 /rtm spawn <mobtype> - Spawn a tracked mob
-/rtm info - Show plugin information
+/rtm help - Show this help message
+/rtm deletespawn <mobtype> - Delete spawn location for a mob
 ```
 
 Permissions:
