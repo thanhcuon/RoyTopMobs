@@ -127,9 +127,9 @@ PlaceholderAPI:
 ```
 %roytopmobs_respawn_<mobtype>% - Shows respawn time
 %roytopmobs_top_<mobtype>_<position>% - Shows top damager info
-%roytopmobs_respawn<mobtype>needed% — the total number of mobs required to spawn the boss.
-%roytopmobs<mobtype>spawned% — indicates whether the boss has already spawned.
-%roytopmobs<mobtype>_cooldown% — the remaining time until the next spawn.
+%roytopmobs_respawn<mobtype>needed% — the total number of mobs required to spawn the boss. <update 1.3.1>
+%roytopmobs<mobtype>spawned% — indicates whether the boss has already spawned. <update 1.3.1>
+%roytopmobs<mobtype>_cooldown% — the remaining time until the next spawn. <update 1.3.1>
 ```
 
 Respawn System:
