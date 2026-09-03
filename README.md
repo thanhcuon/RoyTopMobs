@@ -1,6 +1,6 @@
-# RoyTopMobs (v2026.2)
+# RoyTopMobs (v2026.3)
 
-[![Version](https://img.shields.io/badge/version-2026.2-orange.svg)](https://www.spigotmc.org/resources/roytopmobs.126886/)
+[![Version](https://img.shields.io/badge/version-2026.3-orange.svg)](https://www.spigotmc.org/resources/roytopmobs.126886/)
 ![Minecraft](https://img.shields.io/badge/minecraft-1.18.2%20--%201.21.x+-brightgreen.svg)
 ![Java](https://img.shields.io/badge/java-17+-blue.svg)
 [![MythicMobs](https://img.shields.io/badge/MythicMobs-5.12.1+-purple.svg)](https://modrinth.com/plugin/mythicmobs)
@@ -51,6 +51,8 @@ RoyTopMobs provides a comprehensive suite of PlaceholderAPI expansions (replace 
 
 | Placeholder | Description / Output |
 | :--- | :--- |
+| `%roytopmobs_name_<mob>%` | Returns the boss display name with full RGB hex colors and gradients. |
+| `%roytopmobs_name_clean_<mob>%` | Returns the plain boss display name stripped of all color codes (for tab/scoreboard). |
 | `%roytopmobs_spawned_<mob>%` | Returns whether the boss is currently alive (`Yes` or `No`). |
 | `%roytopmobs_cooldown_<mob>%` | Returns formatted time remaining until respawn (e.g. `4m 30s`) or `Ready`. |
 | `%roytopmobs_respawn_<mob>%` | Returns the full colorized respawn countdown message configured in language files. |
@@ -168,7 +170,7 @@ usage-deletespawn: "&eUsage: &f/roytopmob deletespawn <mob_id>"
 
 help-menu:
   - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  - "<gradient:#FFA500:#FF4500>&l       ROYTOPMOBS COMMAND SYSTEM (v2026.2)</gradient>"
+  - "<gradient:#FFA500:#FF4500>&l       ROYTOPMOBS COMMAND SYSTEM (v2026.3)</gradient>"
   - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   - " &e• &f/rtm reload &8- &7Reloads all configurations and mob files"
   - " &e• &f/rtm toggle &8- &7Toggles server-wide damage tracking"
