@@ -1,6 +1,6 @@
-# RoyTopMobs (v2026.3)
+# RoyTopMobs (v2026.4.2)
 
-[![Version](https://img.shields.io/badge/version-2026.3-orange.svg)](https://www.spigotmc.org/resources/roytopmobs.126886/)
+[![Version](https://img.shields.io/badge/version-2026.4.2-orange.svg)](https://www.spigotmc.org/resources/roytopmobs.126886/)
 ![Minecraft](https://img.shields.io/badge/minecraft-1.18.2%20--%201.21.x+-brightgreen.svg)
 ![Java](https://img.shields.io/badge/java-17+-blue.svg)
 [![MythicMobs](https://img.shields.io/badge/MythicMobs-5.12.1+-purple.svg)](https://modrinth.com/plugin/mythicmobs)
@@ -77,6 +77,7 @@ Base command: `/roytopmob` (Aliases: `/rtm`)
 | `/rtm toggle` | Toggles damage tracking globally on the server. | `roytopmob.toggle` | OP |
 | `/rtm spawn <mob_id>` | Spawns a tracked boss mob at its configured spawn point or target block. | `roytopmob.spawn` | OP |
 | `/rtm despawn <mob_id>` | Silently despawns active boss mob instances without rewards or death broadcasts. | `roytopmob.despawn` | OP |
+| `/rtm resetcooldown <mob_id>` | Resets boss respawn cooldown back to its configured initial countdown duration. | `roytopmob.resetcooldown` | OP |
 | `/rtm setspawn <mob_id>` | Sets the boss spawn point on the targeted block in the player's crosshairs. | `roytopmob.setspawn` | OP |
 | `/rtm deletespawn <mob_id>` | Deletes the saved spawn point and removes its hologram timer. | `roytopmob.deletespawn` | OP |
 | `/rtm help` | Displays the in-game command help menu. | *None* | Everyone |
@@ -159,23 +160,27 @@ spawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSpawned boss &e{mob
 spawn-fail: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cFailed to spawn boss &e{mobtype}&c! Please check configuration."
 despawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSilently despawned &e{count} &ainstance(s) of boss &e{mobtype}&a!"
 despawn-none: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cNo active instances of boss &e{mobtype} &cwere found on the server!"
+resetcooldown-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSuccessfully reset respawn cooldown for boss &e{mobtype} &ato &e{time}&a!"
+resetcooldown-not-enabled: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cBoss &e{mobtype} &cdoes not have respawn time countdown enabled!"
 setspawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSpawn location saved for boss &e{mobtype}&a!"
 deletespawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSpawn location deleted for boss &e{mobtype}&a!"
 deletespawn-fail: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cFailed to delete spawn location for boss &e{mobtype}&c!"
 
 usage-spawn: "&eUsage: &f/roytopmob spawn <mob_id>"
 usage-despawn: "&eUsage: &f/roytopmob despawn <mob_id>"
+usage-resetcooldown: "&eUsage: &f/roytopmob resetcooldown <mob_id>"
 usage-setspawn: "&eUsage: &f/roytopmob setspawn <mob_id>"
 usage-deletespawn: "&eUsage: &f/roytopmob deletespawn <mob_id>"
 
 help-menu:
   - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  - "<gradient:#FFA500:#FF4500>&l       ROYTOPMOBS COMMAND SYSTEM (v2026.3)</gradient>"
+  - "<gradient:#FFA500:#FF4500>&l       ROYTOPMOBS COMMAND SYSTEM (v2026.4.2)</gradient>"
   - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   - " &e• &f/rtm reload &8- &7Reloads all configurations and mob files"
   - " &e• &f/rtm toggle &8- &7Toggles server-wide damage tracking"
   - " &e• &f/rtm spawn <mob_id> &8- &7Spawns a boss immediately"
   - " &e• &f/rtm despawn <mob_id> &8- &7Silently despawns a boss without rewards"
+  - " &e• &f/rtm resetcooldown <mob_id> &8- &7Resets respawn cooldown to initial duration"
   - " &e• &f/rtm setspawn <mob_id> &8- &7Saves current location as spawn point"
   - " &e• &f/rtm deletespawn <mob_id> &8- &7Deletes saved spawn point"
   - " &e• &f/rtm help &8- &7Displays this help menu"
