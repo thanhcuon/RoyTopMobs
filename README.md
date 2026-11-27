@@ -1,669 +1,324 @@
-# RoyTopMobs (v2026.4.2)
+<div align="center">
 
-[![Version](https://img.shields.io/badge/version-2026.4.2-orange.svg)](https://www.spigotmc.org/resources/roytopmobs.126886/)
-![Minecraft](https://img.shields.io/badge/minecraft-1.18.2%20--%201.21.x+-brightgreen.svg)
-![Java](https://img.shields.io/badge/java-17+-blue.svg)
-[![MythicMobs](https://img.shields.io/badge/MythicMobs-5.12.1+-purple.svg)](https://modrinth.com/plugin/mythicmobs)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/zNpkXGFQRS)
+![RoyTopMobs Banner](https://i.imgur.com/lr0hZ8u.jpeg)
 
-**RoyTopMobs** is an enterprise-grade Minecraft server plugin engineered to turn boss encounters into competitive, high-stakes community events. It accurately tracks real-time damage dealt to **MythicMobs** and vanilla entities, calculates health-based ranking leaderboards, broadcasts rich announcements, manages persistent cooldowns across server restarts, and dispatches customizable console and player rewards.
+# RoyTopMobs (v2026.5.0)
 
----
+[![Version](https://img.shields.io/badge/Version-2026.5.0-orange?style=for-the-badge)](https://bstats.org/plugin/bukkit/RoyTopMobs/26207)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.18%20--%2026.3-brightgreen?style=for-the-badge)
+![Java](https://img.shields.io/badge/Java-17%2B-blue?style=for-the-badge)
+![Platforms](https://img.shields.io/badge/Platforms-Spigot%20%7C%20Paper%20%7C%20Purpur%20%7C%20Folia%20%7C%20Leaf-blueviolet?style=for-the-badge)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/zNpkXGFQRS)
+[![bStats](https://img.shields.io/badge/bStats-26207-teal?style=for-the-badge)](https://bstats.org/plugin/bukkit/RoyTopMobs/26207)
 
-## 📖 Overview
+**Turn every boss fight into an exciting server-wide competition!**  
+**RoyTopMobs** tracks real-time player damage on **MythicMobs** and **Vanilla** bosses, builds live damage leaderboards, hands out tiered rewards, manages persistent respawn timers & holograms, and sends rich **Discord Webhook** alerts — all with full **Folia** and **Minecraft 1.18 – 26.3** support.
 
-Designed from the ground up for modern Minecraft RPG, Survival, Skyblock, and Factions networks, **RoyTopMobs** features a modular multi-file architecture:
-
-- **Modular Mob Definitions (`plugins/RoyTopMobs/tracked-mob/`):** Add unlimited individual boss YAML files.
-- **Multi-Language Support (`plugins/RoyTopMobs/message/`):** Instant switching between English (`en.yml`) and Vietnamese (`vi.yml`).
-- **Persistent Cooldown Data (`plugins/RoyTopMobs/respawn-data.yml`):** Cooldown timestamps and active boss states are preserved across server restarts and `/rtm reload` calls.
-- **Native Floating Holograms:** Built-in Minecraft 1.19.4+ `TEXT_DISPLAY` hologram support (no external hologram plugin required), with full compatibility for **FancyHolograms**, **DecentHolograms**, and 1.18.2 ArmorStand fallbacks.
-- **Rich Discord Webhooks:** Sends customizable Discord embeds on boss summon, boss defeat, and reward distribution with multi-line damage rankings.
-- **Database Statistics:** Asynchronous SQLite and MySQL storage powered by **HikariCP** to track lifetime player kills and damage leaderboards.
+</div>
 
 ---
 
-## ⚡ Key Features
+<a id="table-of-contents"></a>
+## 📑 Table of Contents
 
-- **📁 Modular Multi-File Boss Configuration:** Define bosses independently in `tracked-mob/<mob_id>.yml`. Each file controls summon conditions, title/sound broadcasts, rewards, holograms, and webhooks.
-- **⚔️ Accurate Damage & Percentage Tracking:** Tracks melee attacks, arrows, tridents, and projectiles. Computes exact damage contribution percentages relative to the boss's true maximum health.
-- **🛡️ Exclusive RoyTopMobs Entity Tracking (PDC):** Uses Minecraft `PersistentDataContainer` (PDC) tagging to track only mobs summoned by RoyTopMobs (`/rtm spawn`, respawn timers, or fixed schedules). Mobs spawned from external commands (`/mm mobs spawn`, `/summon`) or natural spawners are completely ignored.
-- **📏 Boss Leash / Tether Range (`spawn.lease-range`):** Prevent bosses from wandering too far from their arenas. If a boss moves further than the configured distance from its spawn point (or enters another world), it is automatically teleported back.
-- **⏳ Persistent Respawn Cooldowns (`respawn-data.yml`):** Cooldown timestamps and boss states persist across server restarts and `/rtm reload` commands. Bosses will never prematurely respawn after a reboot.
-- **🎁 Flexible Multi-Tiered Rewards:**
-  - Tiered ranking rewards for Top #1 to Top #N fighters.
-  - Participation rewards with customizable minimum damage qualification thresholds.
-  - Final blow (last-hit) killer rewards.
-  - Console and player command dispatching with dynamic placeholders (`%player%`, `{damage}`, `{percentage}`, `{mobname}`).
-- **🤖 Rich Discord Webhook Embeds:** Sends automated Discord embed alerts on boss spawn, boss defeat, and reward distribution with clean multi-line ranking leaderboards.
-- **🔮 Native Floating Hologram Countdowns:** Supports Minecraft 1.19.4+ `TEXT_DISPLAY` entities out-of-the-box, with support for **FancyHolograms**, **DecentHolograms**, and ArmorStands.
-- **📏 Customizable Hologram Height Offset (`hologram.y-offset`):** Configure the exact floating altitude above the boss spawn point.
-- **🎯 Line-of-Sight Spawn Point Setting:** `/rtm setspawn <mob_id>` uses raycasting to automatically lock onto the targeted block in the player's crosshairs.
-- **🌈 Full RGB Hex & Gradient Support:** Supports MiniMessage tags, hex colors (`&#RRGGBB`, `#RRGGBB`), and multi-stop nested gradients (`<gradient:#FF4500:#FFA500>Text</gradient>`) with formatting preservation.
-- **💾 Async Database Statistics (HikariCP):** Asynchronously records player kills, lifetime damage, and leaderboards using SQLite or MySQL.
-- **🔄 Automatic Configuration Migration (`ConfigMigrator`):** Automatically detects and inserts new configuration keys into existing files upon plugin updates without overwriting custom settings.
+- [🌟 Overview & Key Features](#overview-and-key-features)
+- [🔄 How It Works](#how-it-works)
+- [📋 Requirements & Supported Platforms](#requirements-and-supported-platforms)
+- [🚀 Quick Installation Guide](#quick-installation-guide)
+- [⚙️ Configuration Overview](#configuration-overview)
+- [🛡️ Commands & Permissions](#commands-and-permissions)
+- [📊 PlaceholderAPI Placeholders](#placeholderapi-placeholders)
+- [🤖 Discord Webhook Guide](#discord-webhook-guide)
+- [📈 Live bStats Server Statistics](#live-bstats-server-statistics)
+- [💬 Support & Community](#support-and-community)
 
 ---
 
+<a id="overview-and-key-features"></a>
+## 🌟 Overview & Key Features
+
+Whether you run an RPG, Survival, Skyblock, or Factions server, **RoyTopMobs** makes boss events easy to set up and rewarding for players:
+
+- **🛡️ Exclusive PDC Entity Tracking:** Uses Minecraft's `PersistentDataContainer` (PDC) so only bosses spawned by RoyTopMobs (`/rtm spawn`, respawn timers, or schedules) are tracked. Mobs from `/mm mobs spawn`, `/summon`, or natural spawners are ignored.
+- **⚔️ Real-Time Damage Leaderboard:** Accurately tracks player damage and calculates exact percentage contributions relative to the boss's maximum health.
+- **🎁 Tiered & Flexible Rewards:** Configure **Top #1 to Top #N** rewards, **`*` participation** rewards (with `min-damage` and `max-damage` thresholds), and **`killer`** final-hit rewards using `console:` or `player:` commands and broadcasts.
+- **⏳ Persistent Cooldowns & Schedules:** Cooldowns are saved in `respawn-data.yml` so timers survive restarts and reloads. Choose between interval timers (`respawn.time` in seconds) or fixed weekly/daily schedules (`respawn.schedule` with `time-zone` and `DAY;HH:mm:ss`).
+- **📏 Boss Leash Range (`lease-range`):** Keep bosses inside their arena by automatically tethering them back if they wander too far from their spawn point.
+- **🔮 Native & Plugin Holograms:** Built-in `TEXT_DISPLAY` floating countdowns on **1.19.4+** (with `ArmorStand` fallback on **1.18 – 1.19.3**), plus optional **FancyHolograms** and **DecentHolograms** integration.
+- **🤖 Overhauled Discord Webhooks:** Send up to **10 embeds** per message, customize `username`, `avatar-url`, and `content` per event (`spawn`, `death`, `reward`), post to Threads or Forums, use silent notifications, and display dynamic `top-limit` leaderboards.
+- **🌐 14 Built-In Languages:** Switch instantly in `config.yml` between `en`, `vi`, `es`, `pt_br`, `fr`, `de`, `ru`, `zh_cn`, `ja`, `ko`, `id`, `tr`, `pl`, and `it` — with full Legacy `&`, Hex (`#RRGGBB`, `&#RRGGBB`), and `<gradient:#c1:#c2>...</gradient>` support.
+- **⚡ Dynamic Command Aliases:** Add unlimited custom aliases in `config.yml` (`command-aliases`) and apply them immediately with `/rtm reload` — no server restart needed, complete with permission-aware tab completion.
+- **🔄 Lossless Config Migration:** Update safely with `/rtm migrate`! Comments and key ordering are preserved, and automatic timestamped backups are saved in `backups/<timestamp>/`.
+- **💾 SQLite & MySQL Storage:** Stores lifetime player stats (`kills`, `total_damage`, `last_damage`, `highest_damage`, `last_world`, `first_kill`, `last_kill`) with periodic `cache-refresh-seconds` for live database edits.
+
+[⬆ Back to Table of Contents](#table-of-contents)
+
+---
+
+<a id="how-it-works"></a>
+## 🔄 How It Works
+
+Here is the simple lifecycle of a RoyTopMobs boss encounter from start to finish:
+
+1. **Spawn:** A boss spawns via `/rtm spawn <mob_id>`, an automatic respawn timer, or a fixed schedule (after checking optional `spawn.condition` rules like `max-player` or `kill-in-radius`). RoyTopMobs tags the entity with PDC and triggers any configured spawn broadcast, title, sound, potion effect, and Discord webhook.
+2. **Combat:** Players attack the boss. RoyTopMobs records each player's damage in real time and keeps the boss within `spawn.lease-range` if configured.
+3. **Death:** When the boss is defeated, RoyTopMobs finalizes the damage rankings and saves player lifetime statistics to SQLite or MySQL. Death broadcasts, titles, sounds, effects, and Discord webhooks fire automatically.
+4. **Leaderboard & Rewards:** Players who meet `min-damage` (and within `max-damage`) are ranked **#1, #2, #3...** and receive their tiered `top-damage` rewards, `*` participation rewards, and `killer` last-hit rewards.
+5. **Respawn:** The persistent cooldown (`respawn.time` or `respawn.schedule`) begins and is saved to `respawn-data.yml`. If holograms are enabled, a live countdown appears above the spawn location until the boss returns!
+
+[⬆ Back to Table of Contents](#table-of-contents)
+
+---
+
+<a id="requirements-and-supported-platforms"></a>
+## 📋 Requirements & Supported Platforms
+
+| Requirement | Details |
+| :--- | :--- |
+| **Minecraft Versions** | `1.18 – 26.3` (`api-version: '1.18'`) |
+| **Java Version** | `Java 17+` |
+| **Server Platforms** | `Spigot`, `Bukkit`, `Paper`, `Purpur`, `Folia` (`folia-supported: true`), `Leaf` |
+| **Required Dependency** | **MythicMobs** *(plugin also logs a fallback warning and supports `vanilla:<ENTITY_TYPE>` mobs if MythicMobs is absent)* |
+| **Optional Dependencies** | **PlaceholderAPI**, **FancyHolograms**, **DecentHolograms** |
+| **Built-In Holograms** | Native `TEXT_DISPLAY` (`1.19.4+`) with `ArmorStand` fallback (`1.18 – 1.19.3`) |
+
+[⬆ Back to Table of Contents](#table-of-contents)
+
+---
+
+<a id="quick-installation-guide"></a>
+## 🚀 Quick Installation Guide
+
+Follow these 6 quick steps to get your first boss running in minutes:
+
+1. **Check Requirements:** Make sure your server runs **Java 17+** on **Minecraft 1.18 – 26.3** (Spigot, Paper, Purpur, Folia, or Leaf).
+2. **Install Dependencies:** Place **MythicMobs** (required for MythicMobs bosses) and any optional plugins (**PlaceholderAPI**, **FancyHolograms**, **DecentHolograms**) into your `plugins/` folder.
+3. **Install RoyTopMobs:** Drop `RoyTopMobs-2026.5.0.jar` into `plugins/` and **restart** your server to generate the default files.
+4. **Pick Your Language:** Open `plugins/RoyTopMobs/config.yml` and set `message: en` (or any of the 14 supported language codes).
+5. **Create Your First Boss:** Copy `plugins/RoyTopMobs/tracked-mob/_example.yml` to a new file (for example `tracked-mob/fire_dragon.yml`), set `mob-type` to `"mythicmobs:<id>"` or `"vanilla:<ENTITY_TYPE>"`, and customize your rewards.
+6. **Set Spawn & Test:** Run `/rtm reload`, look at the block where the boss should appear, run `/rtm setspawn fire_dragon`, and test it with `/rtm spawn fire_dragon`!
+
+[⬆ Back to Table of Contents](#table-of-contents)
+
+---
+
+<a id="configuration-overview"></a>
+## ⚙️ Configuration Overview
+
+RoyTopMobs keeps configuration clean and modular inside `plugins/RoyTopMobs/`. Click any section below to see what each file does:
+
+<details>
+<summary><b>⚙️ 1. Main Settings — <code>config.yml</code></b></summary>
+
+Controls global plugin behavior:
+- **`message`**: Active language code (`en`, `vi`, `es`, `pt_br`, `fr`, `de`, `ru`, `zh_cn`, `ja`, `ko`, `id`, `tr`, `pl`, `it`).
+- **`command-aliases`**: List of custom command aliases (default `["rtm", "roytopmobs"]`), applied immediately on `/rtm reload`.
+- **`metrics`**: bStats settings (`enabled`, `server-uuid`, `log-startup`, `error-reporting`).
+- **`database`**: Choose `SQLITE` (`database.db`) or `MYSQL` (`host`, `port`, `database`, `username`, `password`, `use-ssl`, `pool.*`), plus `cache-refresh-seconds` (default `30`). Stores table `roytopmobs_player_stats`.
+- **`placeholder`**: Global formatting for PlaceholderAPI (`damage-format`, `percentage-format`, `no-data`, `no-player`, `ready`, `spawned-yes`, `spawned-no`).
+
+</details>
+
+<details>
+<summary><b>🐉 2. Per-Boss Configs — <code>tracked-mob/&lt;mob_id&gt;.yml</code> (Template: <code>_example.yml</code>)</b></summary>
+
+Each `.yml` file in `tracked-mob/` defines one tracked boss. Here is a minimal overview of the main sections:
+
+```yaml
+# Target MythicMobs ID or Vanilla entity (e.g., "vanilla:WITHER")
+mob-type: "mythicmobs:SkeletonKing"
+name: "<gradient:#FF4500:#FFA500>Skeleton King</gradient>"
+
+spawn:
+  max-mob-spawn: 1
+  mob-per-spawn: 1
+  lease-range: 40          # Teleports boss back if it leaves this radius
+  condition:
+    max-player: 1          # Minimum online players required to spawn
+    kill-in-radius: []     # Optional mob kill requirements before spawning
+
+respawn:
+  time:
+    enabled: true
+    time: 3600             # Respawn cooldown in seconds
+  schedule:
+    enabled: false
+    time-zone: "UTC"
+    schedule:
+      - "SUNDAY;20:00:00" # Fixed weekly schedule (DAY;HH:mm:ss)
+
+reward:
+  enabled: true
+  damage-settings:
+    min-damage: 100
+    max-damage: -1
+  top-damage:
+    "1":
+      - "console: give %player% diamond 5"
+    "*":                   # Participation reward for all qualifying players
+      - "console: give %player% emerald 1"
+  killer:                  # Final-hit (last blow) reward
+    - "console: give %player% gold_ingot 3"
+
+hologram:
+  enabled: true
+  type: "TEXT_DISPLAY"     # TEXT_DISPLAY, FANCY_HOLOGRAM, or DECENT_HOLOGRAMS
+  y-offset: 2.5
+```
+
+> Each boss file also supports `spawn`/`death` `broadcast`, `title`, `sound`, `effect`, `discord-webhook`, and `spawn-data.location` (`world`, `x`, `y`, `z`, `yaw`, `pitch`).
+
+</details>
+
+<details>
+<summary><b>🌐 3. Language Files — <code>message/message_&lt;lang&gt;.yml</code></b></summary>
+
+RoyTopMobs includes **14 built-in languages**:
+`en`, `vi`, `es`, `pt_br`, `fr`, `de`, `ru`, `zh_cn`, `ja`, `ko`, `id`, `tr`, `pl`, and `it`.
+
+All messages support standard `&` color codes, Hex colors (`#RRGGBB`, `&#RRGGBB`), and `<gradient:#c1:#c2>...</gradient>` tags.
+
+</details>
+
+<details>
+<summary><b>⏳ 4. Persistent Respawn State — <code>respawn-data.yml</code></b></summary>
+
+Automatically managed by RoyTopMobs to store active boss states and remaining respawn cooldown timestamps. This ensures bosses never reset or respawn early when your server restarts or when you run `/rtm reload`.
+
+</details>
+
+<details>
+<summary><b>💾 5. Automatic Backups — <code>backups/&lt;timestamp&gt;/</code></b></summary>
+
+Before running lossless configuration migrations (automatically on update or manually via `/rtm migrate`), RoyTopMobs saves a full timestamped copy of your existing configuration files into `backups/<timestamp>/` so nothing is ever lost.
+
+</details>
+
+[⬆ Back to Table of Contents](#table-of-contents)
+
+---
+
+<a id="commands-and-permissions"></a>
+## 🛡️ Commands & Permissions
+
+- **Main Command:** `/roytopmob`
+- **Default Aliases:** `/rtm`, `/roytopmobs` *(add unlimited custom aliases in `config.yml` under `command-aliases` and apply them live with `/rtm reload`)*
+
+| Command | Description | Permission | Default |
+| :--- | :--- | :--- | :--- |
+| `/rtm reload` | Reloads `config.yml`, language files, tracked mobs, database pool/cache, and dynamic command aliases. | `roytopmob.reload` | OP |
+| `/rtm toggle` | Toggles global server-wide boss damage tracking on/off. | `roytopmob.toggle` | OP |
+| `/rtm spawn <mob_id>` | Summons a tracked boss at its saved spawn point (or targeted block if run by a player without a saved point). | `roytopmob.spawn` | OP |
+| `/rtm despawn <mob_id>` | Silently removes all active instances of the boss without death broadcasts or rewards, and restarts time respawn cooldown if enabled. | `roytopmob.despawn` | OP |
+| `/rtm resetcooldown <mob_id>` | Despawns active instances and resets the boss respawn countdown back to its configured initial duration (requires `respawn.time.enabled: true`). | `roytopmob.resetcooldown` *(or `roytopmob.admin`)* | OP |
+| `/rtm setspawn <mob_id>` | Saves the block in the player's line of sight (up to 50 blocks, fallback to player location) as the boss spawn point. | `roytopmob.setspawn` | OP |
+| `/rtm deletespawn <mob_id>` | Deletes the saved spawn point and removes any active hologram timer for that boss. | `roytopmob.deletespawn` | OP |
+| `/rtm migrate [all\|config\|mobs\|messages]` | Runs lossless configuration migration with automatic timestamped backups in `backups/<timestamp>/`. | `roytopmob.migrate` | OP |
+| `/rtm help` | Displays the command help menu. | *None* | Everyone |
+
+> **Update Notifications:** Players with `roytopmob.update` (Default: **OP**) receive in-game update notifications when joining the server.
+
+[⬆ Back to Table of Contents](#table-of-contents)
+
+---
+
+<a id="placeholderapi-placeholders"></a>
 ## 📊 PlaceholderAPI Placeholders
 
-RoyTopMobs provides a comprehensive suite of PlaceholderAPI expansions (replace `<mob>` with the mob ID configured in `tracked-mob/`, and `<1-N>` with the rank number):
+- **Identifier:** `roytopmobs` (Prefix: `%roytopmobs_...%`)
+- **Flexible Syntax:** You can also place `<mob>` before the suffix (for example, `%roytopmobs_<mob>_cooldown%`).
 
-| Placeholder | Description / Output |
+### Mob Info & Status
+
+| Placeholder | Description |
 | :--- | :--- |
-| `%roytopmobs_name_<mob>%` | Returns the boss display name with full RGB hex colors and gradients. |
-| `%roytopmobs_name_clean_<mob>%` | Returns the plain boss display name stripped of all color codes (for tab/scoreboard). |
-| `%roytopmobs_spawned_<mob>%` | Returns whether the boss is currently alive (`Yes` or `No`). |
-| `%roytopmobs_cooldown_<mob>%` | Returns formatted time remaining until respawn (e.g. `4m 30s`) or `Ready`. |
-| `%roytopmobs_respawn_<mob>%` | Returns the full colorized respawn countdown message configured in language files. |
-| `%roytopmobs_needed_<mob>%` | Returns remaining kill condition requirements (e.g. `ZOMBIE: 3/10, SKELETON: 0/5`). |
-| `%roytopmobs_top_<mob>_<1-N>%` | Returns the full formatted damage leaderboard line for rank position `<1-N>`. |
-| `%roytopmobs_top_<mob>_<1-N>_name%` | Returns the player username at rank position `<1-N>`. |
-| `%roytopmobs_top_<mob>_<1-N>_damage%` | Returns the raw damage value dealt by the player at rank position `<1-N>`. |
-| `%roytopmobs_top_<mob>_<1-N>_damage_formatted%` | Returns comma-formatted damage (e.g. `15,250.50`) dealt by rank position `<1-N>`. |
-| `%roytopmobs_top_<mob>_<1-N>_percent%` | Returns damage percentage (e.g. `32.5%`) dealt relative to boss max health. |
-| `%roytopmobs_player_kills_<mob>%` | Returns the viewing player's total lifetime kills for that specific boss from the database. |
-| `%roytopmobs_player_damage_<mob>%` | Returns the viewing player's total lifetime damage dealt to that specific boss. |
+| `%roytopmobs_name_<mob>%` | Colorized boss display name (Hex & Gradients supported) |
+| `%roytopmobs_name_clean_<mob>%` | Plain boss display name stripped of color codes |
+| `%roytopmobs_name_raw_<mob>%` | Raw unparsed name string from YAML |
+| `%roytopmobs_spawned_<mob>%` | Alive status (`Yes` / `No`, configurable in `config.yml`) |
+| `%roytopmobs_cooldown_<mob>%` | Formatted remaining respawn time (`HH:mm:ss` or `mm:ss`), `Ready` when alive on field, or `00:00` |
+| `%roytopmobs_cooldown_formatted_<mob>%` | Alias for `%roytopmobs_cooldown_<mob>%` |
+| `%roytopmobs_respawn_<mob>%` | Full colorized respawn countdown message from language file (`Ready` when alive) |
+| `%roytopmobs_needed_<mob>%` | Remaining kill condition progress (e.g. `ZOMBIE: 3/10, SKELETON: 5/10`, or `N/A`) |
+
+### Top Damage Rankings (`<N>` = `1`, `2`, `3`, ...)
+
+| Placeholder | Description |
+| :--- | :--- |
+| `%roytopmobs_top_<mob>_<N>%` | Full formatted leaderboard line |
+| `%roytopmobs_top_<mob>_<N>_name%` | Player username at rank `N` |
+| `%roytopmobs_top_<mob>_<N>_damage%` | Unformatted rounded damage at rank `N` |
+| `%roytopmobs_top_<mob>_<N>_damage_raw%` | Raw unformatted damage value at rank `N` |
+| `%roytopmobs_top_<mob>_<N>_damage_formatted%` | Formatted damage (e.g. `15,250.5`) at rank `N` |
+| `%roytopmobs_top_<mob>_<N>_percent%` | Formatted percentage with `%` (e.g. `32.5%`) |
+| `%roytopmobs_top_<mob>_<N>_percent_raw%` | Raw percentage number without `%` |
+
+### Player Lifetime Database Stats (SQLite / MySQL)
+
+| Placeholder | Description |
+| :--- | :--- |
+| `%roytopmobs_player_kills_<mob>%` | Viewing player's total kills for `<mob>` |
+| `%roytopmobs_player_damage_<mob>%` | Formatted lifetime damage dealt to `<mob>` |
+| `%roytopmobs_player_damage_raw_<mob>%` | Raw lifetime damage dealt to `<mob>` |
+| `%roytopmobs_player_highest_damage_<mob>%` | Formatted highest single-fight damage to `<mob>` *(also supports `_raw` variant)* |
+| `%roytopmobs_player_last_damage_<mob>%` | Formatted most recent fight damage to `<mob>` *(also supports `_raw` variant)* |
+
+[⬆ Back to Table of Contents](#table-of-contents)
 
 ---
 
-## ⚙️ Commands & Permissions
+<a id="discord-webhook-guide"></a>
+## 🤖 Discord Webhook Guide
 
-Base command: `/roytopmob` (Aliases: `/rtm`)
+RoyTopMobs v2026.5.0 includes a completely overhauled Discord Webhook engine built into every `tracked-mob/<mob_id>.yml` file:
 
-| Command | Description | Permission Node | Default |
-| :--- | :--- | :--- | :--- |
-| `/rtm reload` | Reloads all configuration files, language strings, and mob definitions. | `roytopmob.reload` | OP |
-| `/rtm toggle` | Toggles damage tracking globally on the server. | `roytopmob.toggle` | OP |
-| `/rtm spawn <mob_id>` | Spawns a tracked boss mob at its configured spawn point or target block. | `roytopmob.spawn` | OP |
-| `/rtm despawn <mob_id>` | Silently despawns active boss mob instances without rewards or death broadcasts. | `roytopmob.despawn` | OP |
-| `/rtm resetcooldown <mob_id>` | Resets boss respawn cooldown back to its configured initial countdown duration. | `roytopmob.resetcooldown` | OP |
-| `/rtm setspawn <mob_id>` | Sets the boss spawn point on the targeted block in the player's crosshairs. | `roytopmob.setspawn` | OP |
-| `/rtm deletespawn <mob_id>` | Deletes the saved spawn point and removes its hologram timer. | `roytopmob.deletespawn` | OP |
-| `/rtm help` | Displays the in-game command help menu. | *None* | Everyone |
-
-> **Admin Notification:** Players with permission `roytopmob.update` receive in-game update notifications on join.
-
----
-
-## 📁 Configuration Wiki
-
-<details>
-<summary><b>⚙️ 1. Main Configuration (config.yml)</b></summary>
+- **Per-Event Overrides:** Set global webhook defaults or customize `spawn`, `death`, and `reward` events individually with their own `username`, `avatar-url`, and `content`.
+- **Single or Multi-Embeds:** Send up to **10 embeds** per webhook message, each supporting `title`, clickable `url`, `description`, `color`, `timestamp` toggle, `author`, `thumbnail`, `image`, `footer`, and up to **25 `fields`**.
+- **Threads & Forum Channels:** Post directly into an existing thread using `thread-id`, or automatically create a new Forum post using `thread-name`.
+- **Silent Pings & Mention Control:** Enable `suppress-notifications` for quiet alerts and configure `allowed-mentions` to control role/user/everyone pings safely.
+- **Dynamic Reward Leaderboards:** Use `top-limit` and `format-line` inside the `reward` event to display clean Top #1–#N damage rankings right inside Discord.
+- **Built-In Reliability:** Automatic webhook URL validation (with token masking in console logs), Discord character-limit truncation, and automatic HTTP 429 rate-limit retries.
 
 ```yaml
-# ==============================================================================
-#                      RoyTopMobs Main Configuration (v2026.1)
-# ==============================================================================
-# Language selection: en (English) or vi (Vietnamese)
-# The corresponding language file is loaded from message/en.yml or message/vi.yml
-message: en
-
-# bStats metrics settings
-metrics:
-  enabled: true
-  server-uuid: ''
-  log-startup: true
-  error-reporting: true
-
-# Database configuration (Stores player kills, total damage, and statistics)
-# Supported types: SQLITE (local database file) or MYSQL (remote database with connection pool)
-database:
-  type: SQLITE # SQLITE or MYSQL
-  sqlite:
-    file: "database.db"
-  mysql:
-    host: "localhost"
-    port: 3306
-    database: "roytopmobs"
-    username: "root"
-    password: ""
-    use-ssl: false
-    pool:
-      maximum-pool-size: 10
-      minimum-idle: 2
-      connection-timeout: 30000
-
-# Global placeholder settings (used when generating PlaceholderAPI values)
-placeholder:
-  damage-format: "#,###.##"
-  percentage-format: "#.#"
-  no-data: "No data"
-  no-player: "No player"
-  ready: "Ready"
-  spawned-yes: "Yes"
-  spawned-no: "No"
-```
-</details>
-
-<details>
-<summary><b>🌐 2. English Language File (message/en.yml)</b></summary>
-
-```yaml
-# ==============================================================================
-#                      RoyTopMobs English Language File (en.yml)
-# ==============================================================================
-# Supports: Standard color codes (&a, &c), Hex Colors (#RRGGBB, &#RRGGBB),
-# Gradients: <gradient:#color1:#color2>Text</gradient>
-# ==============================================================================
-
-prefix: "<gradient:#FFA500:#FF4500>&l[RoyTopMobs]</gradient> &8» "
-
-reload: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aAll configurations and mob data have been reloaded successfully!"
-toggle-on: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aDamage tracking has been globally enabled!"
-toggle-off: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cDamage tracking has been globally disabled!"
-no-permission: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cYou do not have permission to execute this command!"
-only-players: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cOnly in-game players can execute this command!"
-mob-not-tracked: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cBoss &e{mobtype} &cis not configured in the tracked-mob folder!"
-
-spawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSpawned boss &e{mobtype} &asuccessfully at your location!"
-spawn-fail: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cFailed to spawn boss &e{mobtype}&c! Please check configuration."
-despawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSilently despawned &e{count} &ainstance(s) of boss &e{mobtype}&a!"
-despawn-none: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cNo active instances of boss &e{mobtype} &cwere found on the server!"
-resetcooldown-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSuccessfully reset respawn cooldown for boss &e{mobtype} &ato &e{time}&a!"
-resetcooldown-not-enabled: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cBoss &e{mobtype} &cdoes not have respawn time countdown enabled!"
-setspawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSpawn location saved for boss &e{mobtype}&a!"
-deletespawn-success: "<gradient:#00FF7F:#00CED1>&l✔</gradient> &aSpawn location deleted for boss &e{mobtype}&a!"
-deletespawn-fail: "<gradient:#FF4500:#DC143C>&l✖</gradient> &cFailed to delete spawn location for boss &e{mobtype}&c!"
-
-usage-spawn: "&eUsage: &f/roytopmob spawn <mob_id>"
-usage-despawn: "&eUsage: &f/roytopmob despawn <mob_id>"
-usage-resetcooldown: "&eUsage: &f/roytopmob resetcooldown <mob_id>"
-usage-setspawn: "&eUsage: &f/roytopmob setspawn <mob_id>"
-usage-deletespawn: "&eUsage: &f/roytopmob deletespawn <mob_id>"
-
-help-menu:
-  - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  - "<gradient:#FFA500:#FF4500>&l       ROYTOPMOBS COMMAND SYSTEM (v2026.4.2)</gradient>"
-  - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  - " &e• &f/rtm reload &8- &7Reloads all configurations and mob files"
-  - " &e• &f/rtm toggle &8- &7Toggles server-wide damage tracking"
-  - " &e• &f/rtm spawn <mob_id> &8- &7Spawns a boss immediately"
-  - " &e• &f/rtm despawn <mob_id> &8- &7Silently despawns a boss without rewards"
-  - " &e• &f/rtm resetcooldown <mob_id> &8- &7Resets respawn cooldown to initial duration"
-  - " &e• &f/rtm setspawn <mob_id> &8- &7Saves current location as spawn point"
-  - " &e• &f/rtm deletespawn <mob_id> &8- &7Deletes saved spawn point"
-  - " &e• &f/rtm help &8- &7Displays this help menu"
-  - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-actionbar:
-  format: "<gradient:#FFA500:#FFFF00>⚔ Damage:</gradient> &f{damage} &7(&e{percentage}%&7)"
-
-messages:
-  respawn-countdown: "&c✦ &e{mobname} &7will respawn in: &f{time}&7!"
-  mob-ready: "&aReady"
-  threshold-min-damage: "&cYou need to deal at least &e{damage} &cdamage to {mobname} to qualify for rankings!"
-  threshold-max-damage: "&cYou reached the maximum tracked damage cap (&e{damage}&c) for {mobname}!"
-  spawn-condition-failed: "&cSummon conditions for {mobname} have not been met!"
-  participation-reward-received: "&aYou received a participation reward!"
-  lasthit-reward-received: "&e{player} &areceived the final hit reward!"
-```
-</details>
-
-<details>
-<summary><b>📖 3. Tracked Mob Tutorial Guide (tracked-mob/_example.yml)</b></summary>
-
-```yaml
-# ==============================================================================
-#                    RoyTopMobs Tracked Mob Template (_example.yml)
-# ==============================================================================
-# IMPORTANT NOTICE:
-# 1. This file is a TUTORIAL TEMPLATE and is NOT loaded in-game.
-# 2. Files starting with '_' (like _example.yml) are IGNORED by RoyTopMobs.
-# 3. To create a new boss, duplicate this file as [mob_id].yml (e.g., eliteskeleton.yml).
-# 4. This _example.yml file is automatically regenerated on reload if deleted.
-# ==============================================================================
-
-# Mark as documentation example (RoyTopMobs will never load this as an active boss)
-is-example: true
-
-# Mob Type (Supports MythicMobs and Vanilla Entity Types)
-# Format: "mythicmobs:[mythicmob_internal_id]" or "vanilla:[ENTITY_TYPE]"
-mob-type: "mythicmobs:EliteSkeleton"
-
-# Display name of the Boss (Supports Hex: #RRGGBB, Gradient: <gradient:#color1:#color2>...</gradient>, Legacy: &c)
-name: "<gradient:#FF4500:#FFA500>&lElite Skeleton</gradient>"
-
-# Summon & Spawning Settings (Spawn)
-spawn:
-  max-mob-spawn: 1
-  mob-per-spawn: 1
-  # Leash range / Tether distance (in blocks) from the spawn point.
-  # Set to 0 to disable tethering.
-  lease-range: 50.0
-
-  condition:
-    enabled: false
-    max-player: 50
-    kill-in-radius:
-      radius: 50
-      mob:
-        ZOMBIE: 10
-        SKELETON: 10
-        "MYTHICMOBS:MinionSkeleton": 5
-
-  broadcast:
-    enabled: true
-    line:
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - "<gradient:#FFA500:#FF4500>&l[BOSS SUMMONED]</gradient> &c✦ &f{mobname} &7has appeared at &e{location}&7!"
-      - "&7Defeat the boss to claim legendary damage rewards!"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-  title:
-    enabled: true
-    title:
-      - "<gradient:#FF0000:#FF4500>&lBOSS SUMMONED!</gradient>"
-    subtitle:
-      - "&f{mobname} &7has awakened at &e{location}"
-    fade-in: 10
-    stay: 50
-    fade-out: 10
-
-  sound:
-    enabled: true
-    type: "ENTITY_ENDER_DRAGON_GROWL"
-    volume: 1.0
-    pitch: 1.0
-
-  effect:
-    enabled: false
-    effect: "GLOWING"
-    level: 1
-    duration: 60
-
-# Death Announcements & Rewards (Death)
-death:
-  broadcast:
-    enabled: true
-    line:
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - "<gradient:#00FF7F:#00CED1>&l[BOSS DEFEATED]</gradient> &c✦ &f{mobname} &7has been slain by &e{killer}&7!"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-  title:
-    enabled: true
-    title:
-      - "<gradient:#00FF7F:#00CED1>&lBOSS DEFEATED!</gradient>"
-    subtitle:
-      - "&7Final Blow: &e{killer}"
-    fade-in: 10
-    stay: 50
-    fade-out: 10
-
-  sound:
-    enabled: true
-    type: "UI_TOAST_CHALLENGE_COMPLETE"
-    volume: 1.0
-    pitch: 1.0
-
-  effect:
-    enabled: false
-    effect: "REGENERATION"
-    level: 1
-    duration: 100
-
-# Respawn Mechanism (Timer Cooldown or Fixed Schedule)
-respawn:
-  time:
-    enabled: true
-    time: 300 # Seconds until respawn (5 minutes)
-
-  schedule:
-    enabled: false
-    time-zone: "SYSTEM"
-    schedule:
-      - "DAILY;08:00:00"
-      - "DAILY;12:00:00"
-      - "DAILY;18:30:00"
-      - "SUNDAY;20:00:00"
-
-# Reward System (Rankings, Thresholds, Final Blow, Participation)
-reward:
-  enabled: true
-
-  damage-settings:
-    enabled: false
-    min-damage: 100.0
-    max-damage: 10000.0
-
-  top-damage:
-    1:
-      - "console: eco give %player% 5000"
-      - "console: give %player% diamond 10"
-      - "player: me I achieved Rank 1 Damage against {mobname}!"
-    2:
-      - "console: eco give %player% 2500"
-      - "console: give %player% diamond 5"
-    3:
-      - "console: eco give %player% 1000"
-      - "console: give %player% diamond 2"
-
-  killer:
-    - "console: eco give %killer% 1000"
-    - "console: give %killer% nether_star 1"
-
-  broadcast:
-    enabled: true
-    line:
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - "<gradient:#FFA500:#FFD700>&l         🏆 TOP DAMAGE DEALERS 🏆</gradient>"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - " &e🥇 &f#1 &6{top_1_name} &8» &e{top_1_damage_formatted} DMG &7(&a{top_1_percent}%&7)"
-      - " &f🥈 &f#2 &f{top_2_name} &8» &e{top_2_damage_formatted} DMG &7(&a{top_2_percent}%&7)"
-      - " &c🥉 &f#3 &c{top_3_name} &8» &e{top_3_damage_formatted} DMG &7(&a{top_3_percent}%&7)"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# Hologram Countdown at the Spawn Point
-hologram:
-  enabled: true
-  type: "TEXT_DISPLAY"
-  y-offset: 3.0
-  line:
-    - "<gradient:#FF4500:#FFA500>&l✦ {mobname} ✦</gradient>"
-    - "&7Respawning in: &f{time}"
-
-# Discord Webhook Notifications
 discord-webhook:
-  enabled: false
-  webhook: "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL_HERE"
-
-  spawn:
-    enabled: true
-    title: "⚔️ WORLD BOSS SUMMONED ⚔️"
-    description: "A legendary boss has awakened! Gather your allies and head to the battlefield immediately!"
-    color: 65280
-    thumbnail: "https://minotar.net/helm/MHF_Skeleton/64.png"
-    footer: "RoyTopMobs • World Boss System"
-    fields:
-      - name: "👾 Boss Name"
-        value: "**{mobname}**"
-        inline: true
-      - name: "📍 Spawn Location"
-        value: "```{location}```"
-        inline: true
-
-  death:
-    enabled: true
-    title: "☠️ WORLD BOSS SLAIN ☠️"
-    description: "The fearsome **{mobname}** has fallen in battle! All qualifying fighters have received their rewards."
-    color: 16711680
-    thumbnail: "https://minotar.net/helm/MHF_Skeleton/64.png"
-    footer: "RoyTopMobs • World Boss System"
-    fields:
-      - name: "🗡️ Final Hit"
-        value: "👑 **{killer}**"
-        inline: true
-      - name: "📍 Defeat Location"
-        value: "```{location}```"
-        inline: true
-
-  reward:
-    enabled: true
-    title: "🏆 TOP DAMAGE RANKINGS 🏆"
-    description: "Here are the top fighters who dealt the highest damage to **{mobname}**:\n\n{top_damage_list}"
-    color: 16766720
-    thumbnail: "https://minotar.net/helm/MHF_Skeleton/64.png"
-    footer: "RoyTopMobs • World Boss System"
-    format-line: "{medal} **#{position}** `{player}` — **{damage}** DMG ({percentage})"
-    fields:
-      - name: "🗡️ Final Hit"
-        value: "👑 **{killer}**"
-        inline: true
-      - name: "💥 Total Damage Dealt"
-        value: "```{total_damage}```"
-        inline: true
-      - name: "🎁 Reward Status"
-        value: "✅ **All top rankings distributed**"
-        inline: false
-
-# Spawn Location Data (Automatically updated via /rtm setspawn [mob_id])
-spawn-data:
-  location:
-    world: ""
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    yaw: 0.0
-    pitch: 0.0
-```
-</details>
-
-<details>
-<summary><b>👾 4. Active Mob Configuration (tracked-mob/eliteskeleton.yml)</b></summary>
-
-```yaml
-# ==============================================================================
-#                    RoyTopMobs Tracked Mob (eliteskeleton.yml)
-# ==============================================================================
-
-mob-type: "mythicmobs:EliteSkeleton"
-name: "<gradient:#FF4500:#FFA500>&lElite Skeleton</gradient>"
-
-spawn:
-  max-mob-spawn: 1
-  mob-per-spawn: 1
-  lease-range: 50.0
-  condition:
-    enabled: false
-    max-player: 50
-    kill-in-radius:
-      radius: 50
-      mob:
-        ZOMBIE: 10
-        SKELETON: 10
-  broadcast:
-    enabled: true
-    line:
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - "<gradient:#FFA500:#FF4500>&l[BOSS SUMMONED]</gradient> &c✦ &f{mobname} &7has appeared at &e{location}&7!"
-      - "&7Gather your allies and defeat the boss for epic rewards!"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  title:
-    enabled: true
-    title:
-      - "<gradient:#FF0000:#FF4500>&lBOSS SUMMONED!</gradient>"
-    subtitle:
-      - "&f{mobname} &7has risen at &e{location}"
-    fade-in: 10
-    stay: 50
-    fade-out: 10
-  sound:
-    enabled: true
-    type: "ENTITY_ENDER_DRAGON_GROWL"
-    volume: 1.0
-    pitch: 1.0
-  effect:
-    enabled: false
-    effect: "GLOWING"
-    level: 1
-    duration: 60
-
-death:
-  broadcast:
-    enabled: true
-    line:
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - "<gradient:#00FF7F:#00CED1>&l[BOSS DEFEATED]</gradient> &c✦ &f{mobname} &7was slain by &e{killer}&7!"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  title:
-    enabled: true
-    title:
-      - "<gradient:#00FF7F:#00CED1>&lBOSS DEFEATED!</gradient>"
-    subtitle:
-      - "&7Final Hit: &e{killer}"
-    fade-in: 10
-    stay: 50
-    fade-out: 10
-  sound:
-    enabled: true
-    type: "UI_TOAST_CHALLENGE_COMPLETE"
-    volume: 1.0
-    pitch: 1.0
-  effect:
-    enabled: false
-    effect: "REGENERATION"
-    level: 1
-    duration: 100
-
-respawn:
-  time:
-    enabled: true
-    time: 300
-  schedule:
-    enabled: false
-    time-zone: "SYSTEM"
-    schedule:
-      - "DAILY;08:00:00"
-      - "DAILY;12:00:00"
-      - "DAILY;18:30:00"
-
-reward:
   enabled: true
-  damage-settings:
-    enabled: false
-    min-damage: 100.0
-    max-damage: 10000.0
-  top-damage:
-    1:
-      - "console: eco give %player% 5000"
-      - "console: give %player% diamond 10"
-      - "player: me I achieved Rank 1 Damage against {mobname}!"
-    2:
-      - "console: eco give %player% 2500"
-      - "console: give %player% diamond 5"
-    3:
-      - "console: eco give %player% 1000"
-      - "console: give %player% diamond 2"
-  killer:
-    - "console: eco give %killer% 1000"
-    - "console: give %killer% nether_star 1"
-  broadcast:
-    enabled: true
-    line:
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - "<gradient:#FFA500:#FFD700>&l         🏆 TOP DAMAGE DEALERS 🏆</gradient>"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      - " &e🥇 &f#1 &6{top_1_name} &8» &e{top_1_damage_formatted} DMG &7(&a{top_1_percent}%&7)"
-      - " &f🥈 &f#2 &f{top_2_name} &8» &e{top_2_damage_formatted} DMG &7(&a{top_2_percent}%&7)"
-      - " &c🥉 &f#3 &c{top_3_name} &8» &e{top_3_damage_formatted} DMG &7(&a{top_3_percent}%&7)"
-      - "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-hologram:
-  enabled: true
-  type: "TEXT_DISPLAY"
-  y-offset: 3.0
-  line:
-    - "<gradient:#FF4500:#FFA500>&l✦ {mobname} ✦</gradient>"
-    - "&7Respawning in: &f{time}"
-
-discord-webhook:
-  enabled: false
-  webhook: ""
-  spawn:
-    enabled: true
-    title: "⚔️ WORLD BOSS SUMMONED ⚔️"
-    description: "A fearsome boss has awakened in the world! Gather your gear and prepare for battle!"
-    color: 65280
-    thumbnail: "https://minotar.net/helm/MHF_Skeleton/64.png"
-    footer: "RoyTopMobs • World Boss System"
-    fields:
-      - name: "👾 Boss Name"
-        value: "**{mobname}**"
-        inline: true
-      - name: "📍 Spawn Location"
-        value: "```{location}```"
-        inline: true
-  death:
-    enabled: true
-    title: "☠️ WORLD BOSS SLAIN ☠️"
-    description: "The boss **{mobname}** has met its demise! All participants have been rewarded."
-    color: 16711680
-    thumbnail: "https://minotar.net/helm/MHF_Skeleton/64.png"
-    footer: "RoyTopMobs • World Boss System"
-    fields:
-      - name: "🗡️ Final Hit"
-        value: "👑 **{killer}**"
-        inline: true
-      - name: "📍 Defeat Location"
-        value: "```{location}```"
-        inline: true
+  webhook: "https://discord.com/api/webhooks/..."
+  username: "RoyTopMobs Boss Alert"
+  suppress-notifications: false
   reward:
-    enabled: true
-    title: "🏆 TOP DAMAGE RANKINGS 🏆"
-    description: "Here are the top fighters who dealt the highest damage to **{mobname}**:\n\n{top_damage_list}"
-    color: 16766720
-    thumbnail: "https://minotar.net/helm/MHF_Skeleton/64.png"
-    footer: "RoyTopMobs • World Boss System"
-    format-line: "{medal} **#{position}** `{player}` — **{damage}** DMG ({percentage})"
-    fields:
-      - name: "🗡️ Final Hit"
-        value: "👑 **{killer}**"
-        inline: true
-      - name: "💥 Total Damage Dealt"
-        value: "```{total_damage}```"
-        inline: true
-      - name: "🎁 Reward Status"
-        value: "✅ **All top rankings distributed**"
-        inline: false
-
-spawn-data:
-  location:
-    world: ""
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    yaw: 0.0
-    pitch: 0.0
+    top-limit: 5
+    # See tracked-mob/_example.yml for available format-line & embed placeholders
+    format-line: "..."
+    embeds:
+      - title: "Boss Defeated!"
+        color: "#FFA500"
+        timestamp: true
 ```
-</details>
 
-<details>
-<summary><b>💾 5. Persistent Respawn Data (respawn-data.yml)</b></summary>
-
-```yaml
-# ==============================================================================
-#                  RoyTopMobs Persistent Respawn Data
-# ==============================================================================
-# This file stores live respawn countdown timestamps and active mob states.
-# Automatically updated by the plugin to persist cooldowns across server restarts.
-# ==============================================================================
-
-respawns:
-  eliteskeleton:
-    spawned: false
-    respawn-at: 1788289900000
-    last-death: 1788289600000
-```
-</details>
+[⬆ Back to Table of Contents](#table-of-contents)
 
 ---
 
-## 📦 Step-by-Step Installation Guide
+<a id="live-bstats-server-statistics"></a>
+## 📈 Live bStats Server Statistics
 
-1. **Download:** Download the latest `RoyTopMobs-2026.1.jar` release.
-2. **Server Environment:** Ensure you are running Java 17+ and Spigot, Paper, or Purpur (*Minecraft 1.18.2 – 1.21.x+*).
-3. **Supported Plugins & Integrations (Optional):**
-   - [MythicMobs](https://modrinth.com/plugin/mythicmobs) — *Create custom MMORPG boss monsters, advanced skills, and custom AI mechanics.*
-   - [PlaceholderAPI](https://modrinth.com/plugin/placeholderapi) — *Display boss cooldowns, alive status, and top damage stats in TAB, Scoreboards, and GUIs.*
-   - [FancyHolograms](https://modrinth.com/plugin/fancyholograms) — *Display floating holographic countdowns above boss spawn locations.*
-   - [DecentHolograms](https://modrinth.com/plugin/decentholograms) — *Display floating holographic countdowns above boss spawn locations.*
-   > *Note: On Minecraft 1.19.4+ servers, RoyTopMobs natively supports `TEXT_DISPLAY` holograms without requiring any external hologram plugin!*
-4. **Installation:**
-   - Place `RoyTopMobs-2026.1.jar` (and your chosen optional plugins) into your server's `plugins/` directory.
-   - Start or restart your server to generate default configurations.
-5. **Setting Boss Spawn Points:**
-   - In-game, stand in front of where you want the boss to appear, aim your crosshairs at the target block, and run:
-     ```
-     /rtm setspawn <mob_id>
-     ```
-6. **Customization & Reload:**
-   - Customize your boss settings in `plugins/RoyTopMobs/tracked-mob/<mob_id>.yml` and apply changes anytime using `/rtm reload`.
+RoyTopMobs uses **bStats** to collect anonymous server and version usage metrics (configurable under `metrics:` in `config.yml`).
+
+[![bStats](https://bstats.org/signatures/bukkit/RoyTopMobs.svg)](https://bstats.org/plugin/bukkit/RoyTopMobs/26207)
+
+[⬆ Back to Table of Contents](#table-of-contents)
 
 ---
 
-## 💬 Community Support & Feedback
+<a id="support-and-community"></a>
+## 💬 Support & Community
 
-If you find **RoyTopMobs** helpful for your server, please take a moment to leave a **⭐⭐⭐⭐⭐ 5-Star Review** on SpigotMC!
+Need help setting up a boss, configuring a webhook, or migrating your configs? Join our community!
 
-- **Need Support / Found a Bug?** Join our official [Discord Community Server](https://discord.gg/zNpkXGFQRS) for direct assistance.
+- **Discord Support Server:** [https://discord.gg/zNpkXGFQRS](https://discord.gg/zNpkXGFQRS)
+- **Author:** `athanh` • **Website:** `roymcvn.com`
+
+⭐ **Enjoying RoyTopMobs?**  
+If RoyTopMobs has made your server's boss fights more exciting, please consider leaving a **5-star review on SpigotMC**! Your feedback helps us keep improving and adding new features.
+
+[⬆ Back to Table of Contents](#table-of-contents)
